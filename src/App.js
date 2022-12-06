@@ -3,6 +3,7 @@ import SignUp from "./SignUp";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Hello from "./Hello";
 import Login from "./Login";
+import Home from "./components/Home";
 
 function App() {
   const [storedToken, setStoredToken] = useState(localStorage.getItem("token"));
@@ -14,7 +15,7 @@ function App() {
     <div>
       <Router>
         <Routes>
-          {storedToken ? (
+          {storedToken && storedToken !== "null" ? (
             <Route
               path="/"
               element={<Hello setStoredToken={setStoredToken} />}
@@ -22,12 +23,16 @@ function App() {
           ) : (
             <Route
               path="/"
-              element={<SignUp setStoredToken={setStoredToken} />}
+              element={<Home setStoredToken={setStoredToken} />}
             />
           )}
           <Route
             path="/login"
             element={<Login setStoredToken={setStoredToken} />}
+          />
+          <Route
+            path="/signup"
+            element={<SignUp setStoredToken={setStoredToken} />}
           />
         </Routes>
       </Router>
