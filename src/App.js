@@ -1,42 +1,30 @@
 import React, { useState, useEffect } from "react";
-import SignUp from "./SignUp";
+import SignUp from "./SignUp.js";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Hello from "./Hello";
 import Login from "./Login";
-import Home from "./components/Home";
+import Home from "./Components/Home";
+import routes from "./routes";
+import { useRoutes } from "react-router-dom";
+import ThemeConfig from "./theme";
+import GlobalStyles from "./theme/globalStyles";
+import { AnimatePresence } from "framer-motion";
+
+// import SidebarConfig from "./Layouts/Dashboard/sidebar";
 
 function App() {
   const [storedToken, setStoredToken] = useState(localStorage.getItem("token"));
   useEffect(() => {
     console.log(storedToken);
   }, [storedToken]);
+  const isLoggedIn = true;
+  const routing = useRoutes(routes(isLoggedIn));
 
   return (
-    <div>
-      <Router>
-        <Routes>
-          {storedToken && storedToken !== "null" ? (
-            <Route
-              path="/"
-              element={<Hello setStoredToken={setStoredToken} />}
-            />
-          ) : (
-            <Route
-              path="/"
-              element={<Home setStoredToken={setStoredToken} />}
-            />
-          )}
-          <Route
-            path="/login"
-            element={<Login setStoredToken={setStoredToken} />}
-          />
-          <Route
-            path="/signup"
-            element={<SignUp setStoredToken={setStoredToken} />}
-          />
-        </Routes>
-      </Router>
-    </div>
+    <ThemeConfig>
+      <GlobalStyles />
+      <AnimatePresence exitBeforeEnter>{routing}</AnimatePresence>
+    </ThemeConfig>
   );
 }
 
